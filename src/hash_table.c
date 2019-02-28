@@ -32,14 +32,19 @@ static void table_free(table* t) {
   free(t);
 }
 
-static int hash_code(const char* str, const int a) {
+static int hash_code(const char* str, int a) {
 //a = 33 gives at most 6 collisions on a set of 50,000 English words
   int code = 0;
   for (int i = strlen(str) - 1; i >= 0; --i)
     code = code * a + str[i];
   return code;
 }
-static int compress_function(const int hashcode, const int a, const int b, const int N) {
+
+static int compress_function(int hashcode, int a, int b, int N) {
   return abs(a * hashcode + b) % N;
 }
 
+static int second_function(int hashcode, int q) {
+  //q must be prime
+  return q - hashcode % q;
+}
