@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "hash_table.h"
+#include <time.h>
 
 static pair* pair_init(const char* k, const char* v) {
   pair* new_pair = (pair*) malloc(sizeof(pair));
@@ -31,5 +32,14 @@ static void table_free(table* t) {
   free(t);
 }
 
-static int hash_code(const char* str) {
+static int hash_code(const char* str, const int a) {
+//a = 33 gives at most 6 collisions on a set of 50,000 English words
+  int code = 0;
+  for (int i = strlen(str) - 1; i >= 0; --i)
+    code = code * a + str[i];
+  return code;
 }
+static int compress_function(const int hashcode, const int a, const int b, const int N) {
+  return abs(a * hashcode + b) % N;
+}
+
